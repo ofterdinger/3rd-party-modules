@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>de.ofterdinger</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.0.3</version>
+    <relativePath></relativePath>
+  </parent>
+
+  <groupId>de.ofterdinger.3rd-party</groupId>
+  <artifactId>parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Reactor of 3rd-party modules</name>
+  <description>The reactor of 3rd-party</description>
+  <url>https://github.com/ofterdinger/3rd-party-modules</url>
+
+  <scm>
+    <connection>scm:git:git@github.com:ofterdinger/3rd-party-modules.git</connection>
+    <developerConnection>scm:git:git@github.com:ofterdinger/3rd-party-modules.git</developerConnection>
+    <url>https://github.com/ofterdinger/3rd-party-modules</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <modules>
+    <module>guice</module>
+  </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- https://search.maven.org/artifact/org.moditect/moditect-maven-plugin -->
+        <plugin>
+          <groupId>org.moditect</groupId>
+          <artifactId>moditect-maven-plugin</artifactId>
+          <version>1.0.0.RC1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
