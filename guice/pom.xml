@@ -10,11 +10,13 @@
   </parent>
 
   <artifactId>guice</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <properties>
     <!-- https://search.maven.org/artifact/com.google.inject/guice -->
     <guice.version>4.2.3</guice.version>
+
+    <dependency-unpack.directory>${project.build.directory}/unpack</dependency-unpack.directory>
   </properties>
 
   <dependencies>
@@ -22,65 +24,51 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
   <build>
+    <outputDirectory>${project.build.directory}/unpack</outputDirectory>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
-          <execution>
-            <id>guice-get-pom</id>
-            <goals>
-              <goal>get</goal>
-            </goals>
-            <phase>process-sources</phase>
-            <configuration>
-              <groupId>com.google.inject</groupId>
-              <artifactId>guice</artifactId>
-              <version>${guice.version}</version>
-
-              <packaging>pom</packaging>
-            </configuration>
-          </execution>
           <execution>
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
-              <excludeTransitive>true</excludeTransitive>
+              <outputDirectory>${dependency-unpack.directory}</outputDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
       <plugin>
-        <groupId>org.moditect</groupId>
-        <artifactId>moditect-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <classesDirectory>${dependency-unpack.directory}</classesDirectory>
+        </configuration>
         <executions>
           <execution>
-            <id>add-module-infos</id>
-            <phase>generate-resources</phase>
+            <id>Building Jar from Filters</id>
+            <phase>package</phase>
             <goals>
-              <goal>add-module-info</goal>
+              <goal>jar</goal>
             </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/modules</outputDirectory>
-              <modules>
-                <module>
-                  <artifact>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-                    <version>${guice.version}</version>
-                  </artifact>
-                  <moduleInfoSource>
-                    open module com.google.guice {
-                    exports com.google.inject;
-                    }
-                  </moduleInfoSource>
-                </module>
-              </modules>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -98,14 +86,20 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${project.build.directory}/modules/guice-${guice.version}.jar</file>
+                  <file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
                   <type>jar</type>
-                  <classifier>module</classifier>
                 </artifact>
               </artifacts>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <artifactId>${project.artifactId}</artifactId>
+        </configuration>
       </plugin>
     </plugins>
   </build>
