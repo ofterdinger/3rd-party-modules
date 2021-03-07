@@ -14,7 +14,7 @@
 
   <properties>
     <!-- https://search.maven.org/artifact/com.google.inject/guice -->
-    <guice.version>4.2.3</guice.version>
+    <guice.version>5.0.1</guice.version>
 
     <dependency-unpack.directory>${project.build.directory}/unpack</dependency-unpack.directory>
   </properties>
